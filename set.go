@@ -174,7 +174,7 @@ type Set interface {
 	// Returns the members of the set as a slice.
 	ToSlice() []interface{}
 
-	//populate data
+	//populate data to slice
 	Scan(dest interface{})
 }
 
