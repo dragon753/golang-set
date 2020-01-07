@@ -338,3 +338,12 @@ func (set *threadUnsafeSet) UnmarshalJSON(b []byte) error {
 
 	return nil
 }
+
+func (set *threadUnsafeSet) Scan(dest interface{}) {
+	valuePtr := reflect.ValueOf(dest)
+	value := valuePtr.Elem()
+
+	for elem := range *set {
+		value.Set(reflect.Append(value, reflect.ValueOf(elem)))
+	}
+}

@@ -25,7 +25,10 @@ SOFTWARE.
 
 package mapset
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func makeSet(ints []int) Set {
 	set := NewSet()
@@ -1155,6 +1158,29 @@ func Test_ToSliceUnthreadsafe(t *testing.T) {
 		if !s.Contains(i) {
 			t.Errorf("Set is missing element: %v", i)
 		}
+	}
+}
+
+func Test_Scan(t *testing.T) {
+	strElement := "Cooking"
+	requiredClasses := NewSet()
+	requiredClasses.Add(strElement)
+
+	dest := make([]string, 0)
+	requiredClasses.Scan(&dest)
+	fmt.Println(dest) //Slice{"Cooking"}
+	if dest[0] != strElement {
+		t.Errorf("result is missing string element: %v", strElement)
+	}
+
+	intElement := 1
+	requiredClasses.Clear()
+	requiredClasses.Add(intElement)
+	intSlice := make([]int, 0)
+	requiredClasses.Scan(&intSlice)
+	fmt.Println(intSlice) //Slice{1}
+	if intSlice[0] != intElement {
+		t.Errorf("result is missing int element: %v", strElement)
 	}
 }
 

@@ -281,3 +281,9 @@ func (set *threadSafeSet) UnmarshalJSON(p []byte) error {
 
 	return err
 }
+
+func (set *threadSafeSet) Scan(dest interface{}) {
+	set.RLock()
+	set.s.Scan(dest)
+	set.RUnlock()
+}
