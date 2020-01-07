@@ -1184,6 +1184,31 @@ func Test_Scan(t *testing.T) {
 	}
 }
 
+func Test_NewSetWithSlice_WrongType(t *testing.T) {
+	strElement := "Cooking"
+	requiredClasses := NewSet()
+	requiredClasses.Add(strElement)
+
+	_, err := NewSetWithSlice(strElement)
+	if err == nil {
+		t.Errorf("should not be nil, but, %v", err)
+	}
+	// fmt.Print(err)
+}
+
+func Test_NewSetWithSlice(t *testing.T) {
+	strElement := "Cooking"
+	requiredClasses := NewSet()
+	requiredClasses.Add(strElement)
+
+	slice := []string{strElement}
+	newSet, err := NewSetWithSlice(slice)
+	if err != nil {
+		t.Errorf("should be nil, but, %v", err)
+	}
+	assertEqual(newSet, requiredClasses, t)
+}
+
 func Test_Example(t *testing.T) {
 	/*
 	   requiredClasses := NewSet()

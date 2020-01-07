@@ -35,6 +35,10 @@ SOFTWARE.
 // that can enforce mutual exclusion through other means.
 package mapset
 
+import "reflect"
+
+import "fmt"
+
 // Set is the primary interface provided by the mapset package.  It
 // represents an unordered set of data and a large number of
 // operations that can be applied to that set.
@@ -199,6 +203,21 @@ func NewSetWith(elts ...interface{}) Set {
 func NewSetFromSlice(s []interface{}) Set {
 	a := NewSet(s...)
 	return a
+}
+
+//sp should be an slice
+func NewSetWithSlice(sp interface{}) (Set, error) {
+	kind := reflect.TypeOf(sp).Kind()
+	if kind != reflect.Slice {
+		return NewSet(), fmt.Errorf("sp passed in should be a pointer")
+	}
+	s := reflect.ValueOf(sp)
+
+	interfaceSlice := make([]interface{}, 0)
+	for i := 0; i < s.Len(); i++ {
+		interfaceSlice = append(interfaceSlice, s.Index(i).Interface())
+	}
+	return NewSetFromSlice(interfaceSlice), nil
 }
 
 // NewThreadUnsafeSet creates and returns a reference to an empty set.
